@@ -40,3 +40,15 @@ func isValid(s string) bool {
 	}
 	return len(sli) == 0
 }
+
+
+func isValid2(s string) bool {
+    m := map[string]string{
+		"(": ")",
+		"{": "}",
+		"[": "]",
+	}
+	
+	s:=new(stack)
+}
+
