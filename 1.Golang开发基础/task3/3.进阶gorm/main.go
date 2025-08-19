@@ -171,10 +171,12 @@ func question3() {
 	db.Create(&posts)
 
 	c := Comment{}
-	db.Model(&c).Where("id=?", 22).First(&c)
-	db.Unscoped().Where("id=?", 22).Delete(&c)
+	// db.Model(&c).Where("id=?", 22).First(&c)
+	db.Unscoped().Where("id=?", 28).Find(&c).Delete(&c)
 }
 
 func main() {
+	// question1()
+	// question2()
 	question3()
 }
