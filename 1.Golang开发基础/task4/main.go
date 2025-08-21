@@ -29,6 +29,7 @@ func Authentication(c *gin.Context) {
 	})
 	if err != nil || !_token.Valid {
 		fmt.Println("token无效", err)
+		panic("token 无效，请重新登录")
 	}
 
 	if claims, ok := _token.Claims.(jwt.MapClaims); ok {
@@ -37,6 +38,18 @@ func Authentication(c *gin.Context) {
 	}
 	c.Next()
 	fmt.Println("处理完成")
+}
+
+func ErrorGlobalProcess(c *gin.Context) {
+	defer func() {
+		if r:= recover();r!=nil {
+			fmt.Println("recover from panic:", r)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": r,
+			})
+		}
+	}()
+	c.Next()
 }
 
 func main() {
@@ -49,7 +62,7 @@ func main() {
 	// 	}
 	// 	Authentication(c)
 	// })
-	r.Use(Authentication)
+	r.Use(ErrorGlobalProcess, Authentication)
 	userGroup := r.Group("/user")
 	userGroup.POST("/regist", controller.Regist)
 	userGroup.POST("/login", controller.Login)
