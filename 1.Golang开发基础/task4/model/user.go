@@ -6,22 +6,29 @@ import (
 )
 
 type User struct {
-    gorm.Model
-    Username string `gorm:"unique;not null"`
-    Password string `gorm:"not null"`
-    Email    string `gorm:"unique;not null"`
+	gorm.Model
+	UserName string `gorm:"unique;not null"`
+	Password string `gorm:"not null"`
+	Email    string `gorm:"unique;not null"`
 }
 
 func init() {
-	db:=config.GetDB()
+	db := config.GetDB()
 	db.AutoMigrate(&User{})
 }
 
-func (u *User) Regist() (err error){
-	db:=config.GetDB()
+func (u *User) Regist() (err error) {
+	db := config.GetDB()
 	return db.Create(&u).Error
 }
 
-func (u *User) Verify(db *gorm.DB) (err error){
+func (u *User) Verify(db *gorm.DB) (err error) {
 	return nil
+}
+
+func GetUserByName(name string) (User, error) {
+	db := config.GetDB()
+	u := User{}
+	err := db.Where("user_name=?", name).First(&u).Error
+	return u, err
 }
