@@ -21,12 +21,21 @@ func init() {
 	defer f.Close()
 }
 
+var ignoreAuthUrls []string = []string{"/comment/select","/post/select","/post/get"}
+
 func Authentication(c *gin.Context) {
 	uri := c.Request.RequestURI
 	if strings.HasPrefix(uri, "/user") {
 		c.Next()
 		return
 	}
+	for _,u := range ignoreAuthUrls {
+		if u == uri {
+			c.Next()
+			return
+		}
+	}
+	
 	tokenString := c.GetHeader("Authorization")
 	log.Println("token:", tokenString)
 	arr := strings.Split(tokenString, " ")
@@ -56,18 +65,15 @@ func Authentication(c *gin.Context) {
 func ErrorGlobalProcess(c *gin.Context) {
 	uri := c.Request.RequestURI
 	log.Println("接收到请求：", uri)
-	// defer func() {
-	// 	if r := recover(); r != nil {
-	// 		log.Print("recover from panic:", r)
-	// 		// buf := make([]byte, 1024)
-    //         // n := runtime.Stack(buf, false)
-    //         // log.Printf("Recovered from panic: %v\n%s", r, buf[:n])
-	// 		c.JSON(http.StatusInternalServerError, gin.H{
-	// 			"error": r,
-	// 		})		
-	// 	}
-	// 	log.Println("处理完成")
-	// }()
+	defer func() {
+		if r := recover(); r != nil {
+			log.Print("recover from panic:", r)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": r,
+			})		
+		}
+		log.Println("处理完成")
+	}()
 	c.Next()
 }
 
@@ -90,9 +96,13 @@ func main() {
 	postGroup := r.Group("/post")
 	postGroup.POST("/create", controller.CreatePost)
 	postGroup.POST("/update", controller.UpdatePost)
-	postGroup.POST("/selectPosts", controller.SelectPosts)
+	postGroup.POST("/select", controller.SelectPosts)
 	postGroup.GET("/get", controller.GetPost)
 	postGroup.DELETE("/delete", controller.DeletePost)
+
+	commentGroup := r.Group("comment")
+	commentGroup.GET("select", controller.SelectComments)
+	commentGroup.POST("add", controller.AddCommment)
 	r.Run()
 
 }

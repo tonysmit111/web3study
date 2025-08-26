@@ -12,7 +12,7 @@ type Post struct {
     Title   string `gorm:"not null"`
     Content string `gorm:"not null"`
     UserID  uint
-	User    User
+	User    User `json:"-"`
 }
 
 var db *gorm.DB = config.GetDB()
