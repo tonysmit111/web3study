@@ -1,0 +1,27 @@
+2025/08/23 08:31:30 接收到请求： /getCurrentUser
+2025/08/23 08:31:30 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU4NzkxMDAsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.CZL3kCfuvLibz-gw3vo49DjR_jVwuj4p2KnGUaozP4c
+2025/08/23 08:31:30 token无效 key is of invalid type
+2025/08/23 08:31:30 recover from panic: token 无效，请重新登录
+2025/08/23 09:04:16 接收到请求： /post/create
+2025/08/23 09:04:16 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU4NzkxMDAsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.CZL3kCfuvLibz-gw3vo49DjR_jVwuj4p2KnGUaozP4c
+2025/08/23 09:04:16 token无效 key is of invalid type
+2025/08/23 09:04:16 recover from panic: token 无效，请重新登录
+2025/08/23 09:04:26 接收到请求： /user/login
+2025/08/23 09:04:26 处理完成
+2025/08/23 09:04:38 接收到请求： /post/create
+2025/08/23 09:04:38 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU5OTc0NjYsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.FZ2nUWyUsLLX92g0w1Rx4E3NJsqtg926e7SJhQWYw4k
+2025/08/23 09:04:38 token无效 key is of invalid type
+2025/08/23 09:04:38 recover from panic: token 无效，请重新登录
+2025/08/23 09:04:46 接收到请求： /post/create
+2025/08/23 09:04:46 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU5OTc0NjYsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.FZ2nUWyUsLLX92g0w1Rx4E3NJsqtg926e7SJhQWYw4k
+2025/08/23 09:04:46 token无效 key is of invalid type
+2025/08/23 09:04:46 recover from panic: token 无效，请重新登录
+2025/08/23 09:10:10 接收到请求： /post/create
+2025/08/23 09:10:10 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU5OTc0NjYsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.FZ2nUWyUsLLX92g0w1Rx4E3NJsqtg926e7SJhQWYw4k
+2025/08/23 09:12:33 token无效 key is of invalid type
+2025/08/23 09:12:33 recover from panic: token 无效，请重新登录
+2025/08/23 09:12:43 接收到请求： /post/create
+2025/08/23 09:12:43 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU5OTc0NjYsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.FZ2nUWyUsLLX92g0w1Rx4E3NJsqtg926e7SJhQWYw4k
+2025/08/23 09:16:01 接收到请求： /post/create
+2025/08/23 09:16:01 token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU5OTc0NjYsImlkIjo2LCJ1c2VyTmFtZSI6InRvbSJ9.FZ2nUWyUsLLX92g0w1Rx4E3NJsqtg926e7SJhQWYw4k
+2025/08/23 09:16:01 recover from panic: reflect: reflect.Value.Set using unaddressable value

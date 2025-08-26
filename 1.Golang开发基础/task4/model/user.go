@@ -19,7 +19,8 @@ func init() {
 
 func (u *User) Regist() (err error) {
 	db := config.GetDB()
-	return db.Create(&u).Error
+	err = db.Create(&u).Error
+	return 
 }
 
 func (u *User) Verify(db *gorm.DB) (err error) {

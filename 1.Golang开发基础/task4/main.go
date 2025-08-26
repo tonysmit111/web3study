@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"io"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/blog/controller"
@@ -10,26 +12,37 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+	f,err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.SetOutput(io.MultiWriter(os.Stdout, f))
+	defer f.Close()
+}
+
 func Authentication(c *gin.Context) {
 	uri := c.Request.RequestURI
-	fmt.Println("接收到请求：", uri)
 	if strings.HasPrefix(uri, "/user") {
 		c.Next()
 		return
 	}
 	tokenString := c.GetHeader("Authorization")
-	fmt.Println("token:", tokenString)
+	log.Println("token:", tokenString)
 	arr := strings.Split(tokenString, " ")
 	_token, err := jwt.Parse(arr[1], func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 		if !ok {
 			return nil, jwt.ErrSignatureInvalid
 		}
-		return "abcxyz", nil
+		return []byte("abcxyz"), nil
 	})
 	if err != nil || !_token.Valid {
-		fmt.Println("token无效", err)
-		panic("token 无效，请重新登录")
+		log.Println("token无效", err)
+		// panic("token 无效，请重新登录")
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"error" : "token 无效，请重新登录",
+		})
 	}
 
 	if claims, ok := _token.Claims.(jwt.MapClaims); ok {
@@ -37,18 +50,24 @@ func Authentication(c *gin.Context) {
 		c.Set("userName", claims["userName"])
 	}
 	c.Next()
-	fmt.Println("处理完成")
+	
 }
 
 func ErrorGlobalProcess(c *gin.Context) {
-	defer func() {
-		if r:= recover();r!=nil {
-			fmt.Println("recover from panic:", r)
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": r,
-			})
-		}
-	}()
+	uri := c.Request.RequestURI
+	log.Println("接收到请求：", uri)
+	// defer func() {
+	// 	if r := recover(); r != nil {
+	// 		log.Print("recover from panic:", r)
+	// 		// buf := make([]byte, 1024)
+    //         // n := runtime.Stack(buf, false)
+    //         // log.Printf("Recovered from panic: %v\n%s", r, buf[:n])
+	// 		c.JSON(http.StatusInternalServerError, gin.H{
+	// 			"error": r,
+	// 		})		
+	// 	}
+	// 	log.Println("处理完成")
+	// }()
 	c.Next()
 }
 
@@ -66,11 +85,14 @@ func main() {
 	userGroup := r.Group("/user")
 	userGroup.POST("/regist", controller.Regist)
 	userGroup.POST("/login", controller.Login)
-	r.POST("/add", func(c *gin.Context) {
-		v,_:=c.Get("userName")
-		s,_:=v.(string)
-		c.String(http.StatusOK, s)
-	})
+// v,_:=c.Get("userName")
+// s,_:=v.(string)
+	postGroup := r.Group("/post")
+	postGroup.POST("/create", controller.CreatePost)
+	postGroup.POST("/update", controller.UpdatePost)
+	postGroup.POST("/selectPosts", controller.SelectPosts)
+	postGroup.GET("/get", controller.GetPost)
+	postGroup.DELETE("/delete", controller.DeletePost)
 	r.Run()
 
 }
